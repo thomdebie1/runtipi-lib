@@ -1,0 +1,34 @@
+{
+  "id": "dawarich",
+  "name": "Dawarich",
+  "available": true,
+  "exposable": true,
+  "port": 3011,
+  "dynamic_config": true,
+  "tipi_version": 1,
+  "version": "latest",
+  "categories": ["utilities"],
+  "short_desc": "Dawarich self-hosted location tracker",
+  "description": "Dawarich with PostGIS, Redis, Rails web and Sidekiq worker.",
+  "author": "freikin",
+  "website": "https://github.com/Freika/dawarich",
+  "source": "https://github.com/Freika/dawarich",
+  "supported_architectures": ["amd64", "arm64"],
+
+  "form_fields": [
+    {
+      "type": "random",
+      "label": "Postgres database password",
+      "env_variable": "DAWARICH_DB_PASSWORD",
+      "required": true,
+      "min": 32
+    },
+    {
+      "type": "random",
+      "label": "Rails secret key base",
+      "env_variable": "DAWARICH_SECRET_KEY_BASE",
+      "required": true,
+      "min": 64
+    }
+  ]
+}
