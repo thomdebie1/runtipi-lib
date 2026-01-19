@@ -1,0 +1,48 @@
+{
+  "id": "directus",
+  "name": "Directus",
+  "available": true,
+  "exposable": true,
+  "port": 8055,
+  "dynamic_config": true,
+  "tipi_version": 1,
+  "version": "11.4.1",
+  "categories": ["data", "development"],
+  "short_desc": "The flexible backend for all your projects",
+  "description": "Directus is a real-time API and App dashboard for managing SQL database content. Turn your DB into a headless CMS, admin panels, or apps with a custom UI, instant APIs, auth & more.",
+  "author": "Directus",
+  "website": "https://directus.io",
+  "source": "https://github.com/directus/directus",
+  "supported_architectures": ["amd64", "arm64"],
+
+  "form_fields": [
+    {
+      "type": "random",
+      "label": "Postgres database password",
+      "env_variable": "DIRECTUS_DB_PASSWORD",
+      "required": true,
+      "min": 32
+    },
+    {
+      "type": "random",
+      "label": "Directus secret key",
+      "env_variable": "DIRECTUS_SECRET_KEY",
+      "required": true,
+      "min": 64
+    },
+    {
+      "type": "email",
+      "label": "Admin email",
+      "env_variable": "DIRECTUS_ADMIN_EMAIL",
+      "required": true,
+      "default": "admin@example.com"
+    },
+    {
+      "type": "password",
+      "label": "Admin password",
+      "env_variable": "DIRECTUS_ADMIN_PASSWORD",
+      "required": true,
+      "min": 8
+    }
+  ]
+}
