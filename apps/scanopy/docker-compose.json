@@ -3,38 +3,52 @@
   "$schema": "https://schemas.runtipi.io/dynamic-compose.json",
   "services": [
     {
-      "name": "scanopy",
-      "image": "scanopy/scanopy:latest",
+      "name": "scanopy_server",
+      "image": "ghcr.io/scanopy/scanopy/server:latest",
       "isMain": true,
       "internalPort": 60072,
       "environment": [
-        { "key": "DATABASE_URL", "value": "postgres://scanopy:${SCANOPY_DB_PASSWORD}@scanopy_db:5432/scanopy" },
-        { "key": "SECRET_KEY", "value": "${SCANOPY_SECRET_KEY}" },
-        { "key": "SCANOPY_DAEMON_MODE", "value": "false" }
+        { "key": "SCANOPY_LOG_LEVEL", "value": "info" },
+        { "key": "SCANOPY_SERVER_PORT", "value": "60072" },
+        { "key": "SCANOPY_DAEMON_PORT", "value": "60073" },
+        { "key": "SCANOPY_DATABASE_URL", "value": "postgresql://postgres:${SCANOPY_DB_PASSWORD}@scanopy_db:5432/scanopy" },
+        { "key": "SCANOPY_WEB_EXTERNAL_PATH", "value": "/app/static" },
+        { "key": "SCANOPY_PUBLIC_URL", "value": "${APP_PROTOCOL}://${APP_DOMAIN}" },
+        { "key": "SCANOPY_INTEGRATED_DAEMON_URL", "value": "http://172.17.0.1:60073" }
       ],
       "volumes": [
-        { "hostPath": "${APP_DATA_DIR}/data", "containerPath": "/app/data" }
+        { "hostPath": "${APP_DATA_DIR}/data", "containerPath": "/data" }
       ],
-      "dependsOn": ["scanopy_db"],
-      "networkMode": "host"
+      "dependsOn": ["scanopy_db", "scanopy_daemon"]
     },
 
     {
       "name": "scanopy_daemon",
-      "image": "scanopy/scanopy-daemon:latest",
+      "image": "ghcr.io/scanopy/scanopy/daemon:latest",
       "environment": [
-        { "key": "SCANOPY_SERVER_URL", "value": "http://localhost:60072" },
-        { "key": "SCANOPY_DAEMON_MODE", "value": "true" }
+        { "key": "SCANOPY_LOG_LEVEL", "value": "info" },
+        { "key": "SCANOPY_SERVER_PORT", "value": "60072" },
+        { "key": "SCANOPY_DAEMON_PORT", "value": "60073" },
+        { "key": "SCANOPY_SERVER_URL", "value": "http://127.0.0.1:60072" },
+        { "key": "SCANOPY_PORT", "value": "60073" },
+        { "key": "SCANOPY_BIND_ADDRESS", "value": "0.0.0.0" },
+        { "key": "SCANOPY_NAME", "value": "scanopy-daemon" },
+        { "key": "SCANOPY_HEARTBEAT_INTERVAL", "value": "30" },
+        { "key": "SCANOPY_MODE", "value": "Push" }
+      ],
+      "volumes": [
+        { "hostPath": "${APP_DATA_DIR}/daemon-config", "containerPath": "/root/.config/daemon" },
+        { "hostPath": "/var/run/docker.sock", "containerPath": "/var/run/docker.sock", "readOnly": true }
       ],
       "networkMode": "host",
-      "dependsOn": ["scanopy"]
+      "privileged": true
     },
 
     {
       "name": "scanopy_db",
-      "image": "postgres:16-alpine",
+      "image": "postgres:17-alpine",
       "environment": [
-        { "key": "POSTGRES_USER", "value": "scanopy" },
+        { "key": "POSTGRES_USER", "value": "postgres" },
         { "key": "POSTGRES_PASSWORD", "value": "${SCANOPY_DB_PASSWORD}" },
         { "key": "POSTGRES_DB", "value": "scanopy" }
       ],
