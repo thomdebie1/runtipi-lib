@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 2,
+  "$schema": "https://schemas.runtipi.io/dynamic-compose.json",
+  "services": [
+    {
+      "name": "scanopy",
+      "image": "ghcr.io/scanopy/scanopy:0.13.5",
+      "isMain": true,
+      "internalPort": 60072,
+      "environment": [
+        { "key": "DATABASE_URL", "value": "postgres://scanopy:${SCANOPY_DB_PASSWORD}@scanopy_db:5432/scanopy" },
+        { "key": "SECRET_KEY", "value": "${SCANOPY_SECRET_KEY}" },
+        { "key": "SCANOPY_DAEMON_MODE", "value": "false" }
+      ],
+      "volumes": [
+        { "hostPath": "${APP_DATA_DIR}/data", "containerPath": "/app/data" }
+      ],
+      "dependsOn": ["scanopy_db"],
+      "networkMode": "host"
+    },
+
+    {
+      "name": "scanopy_daemon",
+      "image": "ghcr.io/scanopy/scanopy-daemon:0.13.5",
+      "environment": [
+        { "key": "SCANOPY_SERVER_URL", "value": "http://localhost:60072" },
+        { "key": "SCANOPY_DAEMON_MODE", "value": "true" }
+      ],
+      "networkMode": "host",
+      "dependsOn": ["scanopy"]
+    },
+
+    {
+      "name": "scanopy_db",
+      "image": "postgres:16-alpine",
+      "environment": [
+        { "key": "POSTGRES_USER", "value": "scanopy" },
+        { "key": "POSTGRES_PASSWORD", "value": "${SCANOPY_DB_PASSWORD}" },
+        { "key": "POSTGRES_DB", "value": "scanopy" }
+      ],
+      "volumes": [
+        { "hostPath": "${APP_DATA_DIR}/db", "containerPath": "/var/lib/postgresql/data" }
+      ]
+    }
+  ]
+}
