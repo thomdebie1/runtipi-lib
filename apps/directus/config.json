@@ -6,7 +6,7 @@
   "port": 8055,
   "dynamic_config": true,
   "tipi_version": 1,
-  "version": "11.4.1",
+  "version": "11.9.0",
   "categories": ["data", "development"],
   "short_desc": "The flexible backend for all your projects",
   "description": "Directus is a real-time API and App dashboard for managing SQL database content. Turn your DB into a headless CMS, admin panels, or apps with a custom UI, instant APIs, auth & more.",
