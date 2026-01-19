@@ -4,7 +4,7 @@
   "services": [
     {
       "name": "scanopy",
-      "image": "ghcr.io/scanopy/scanopy:0.13.5",
+      "image": "scanopy/scanopy:latest",
       "isMain": true,
       "internalPort": 60072,
       "environment": [
@@ -21,7 +21,7 @@
 
     {
       "name": "scanopy_daemon",
-      "image": "ghcr.io/scanopy/scanopy-daemon:0.13.5",
+      "image": "scanopy/scanopy-daemon:latest",
       "environment": [
         { "key": "SCANOPY_SERVER_URL", "value": "http://localhost:60072" },
         { "key": "SCANOPY_DAEMON_MODE", "value": "true" }

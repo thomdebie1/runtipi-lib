@@ -6,7 +6,7 @@
   "port": 60072,
   "dynamic_config": true,
   "tipi_version": 1,
-  "version": "0.13.5",
+  "version": "latest",
   "categories": ["network", "utilities"],
   "short_desc": "Clean network diagrams. One-time setup, zero upkeep.",
   "description": "Scanopy scans your network, identifies hosts and services, and generates an interactive visualization showing how everything connects.",
