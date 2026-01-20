@@ -13,18 +13,19 @@
         { "key": "NEXT_PUBLIC_WEBAPP_URL", "value": "${APP_PROTOCOL}://${APP_DOMAIN}" },
         { "key": "NEXT_PRIVATE_DATABASE_URL", "value": "postgresql://documenso:${DOCUMENSO_DB_PASSWORD}@documenso_db:5432/documenso" },
         { "key": "NEXT_PRIVATE_DIRECT_DATABASE_URL", "value": "postgresql://documenso:${DOCUMENSO_DB_PASSWORD}@documenso_db:5432/documenso" },
-        { "key": "NEXT_PRIVATE_SMTP_HOST", "value": "${DOCUMENSO_SMTP_HOST:-documenso_mail}" },
-        { "key": "NEXT_PRIVATE_SMTP_PORT", "value": "${DOCUMENSO_SMTP_PORT:-2500}" },
-        { "key": "NEXT_PRIVATE_SMTP_USERNAME", "value": "${DOCUMENSO_SMTP_USER:-}" },
-        { "key": "NEXT_PRIVATE_SMTP_PASSWORD", "value": "${DOCUMENSO_SMTP_PASSWORD:-}" },
+        { "key": "NEXT_PRIVATE_ENCRYPTION_KEY", "value": "${DOCUMENSO_ENCRYPTION_KEY}" },
+        { "key": "NEXT_PRIVATE_ENCRYPTION_SECONDARY_KEY", "value": "${DOCUMENSO_ENCRYPTION_SECONDARY_KEY}" },
+        { "key": "NEXT_PRIVATE_SMTP_HOST", "value": "documenso_mail" },
+        { "key": "NEXT_PRIVATE_SMTP_PORT", "value": "2500" },
         { "key": "NEXT_PRIVATE_SMTP_FROM_NAME", "value": "${DOCUMENSO_SMTP_FROM_NAME}" },
-        { "key": "NEXT_PRIVATE_SMTP_FROM_ADDRESS", "value": "${DOCUMENSO_SMTP_FROM_ADDRESS}" }
+        { "key": "NEXT_PRIVATE_SMTP_FROM_ADDRESS", "value": "${DOCUMENSO_SMTP_FROM_ADDRESS}" },
+        { "key": "NEXT_PRIVATE_SMTP_UNSAFE_IGNORE_TLS", "value": "true" }
       ],
       "volumes": [
         { "hostPath": "${APP_DATA_DIR}/uploads", "containerPath": "/app/uploads" },
         { "hostPath": "${APP_DATA_DIR}/certs", "containerPath": "/app/certs" }
       ],
-      "dependsOn": ["documenso_db"]
+      "dependsOn": ["documenso_db", "documenso_mail"]
     },
 
     {
