@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 2,
+  "$schema": "https://schemas.runtipi.io/dynamic-compose.json",
+  "services": [
+    {
+      "name": "documenso",
+      "image": "documenso/documenso:2.3.0",
+      "isMain": true,
+      "internalPort": 3000,
+      "environment": [
+        { "key": "NEXTAUTH_URL", "value": "${APP_PROTOCOL}://${APP_DOMAIN}" },
+        { "key": "NEXTAUTH_SECRET", "value": "${DOCUMENSO_NEXTAUTH_SECRET}" },
+        { "key": "NEXT_PUBLIC_WEBAPP_URL", "value": "${APP_PROTOCOL}://${APP_DOMAIN}" },
+        { "key": "NEXT_PRIVATE_DATABASE_URL", "value": "postgresql://documenso:${DOCUMENSO_DB_PASSWORD}@documenso_db:5432/documenso" },
+        { "key": "NEXT_PRIVATE_DIRECT_DATABASE_URL", "value": "postgresql://documenso:${DOCUMENSO_DB_PASSWORD}@documenso_db:5432/documenso" },
+        { "key": "NEXT_PRIVATE_SMTP_HOST", "value": "${DOCUMENSO_SMTP_HOST:-documenso_mail}" },
+        { "key": "NEXT_PRIVATE_SMTP_PORT", "value": "${DOCUMENSO_SMTP_PORT:-2500}" },
+        { "key": "NEXT_PRIVATE_SMTP_USERNAME", "value": "${DOCUMENSO_SMTP_USER:-}" },
+        { "key": "NEXT_PRIVATE_SMTP_PASSWORD", "value": "${DOCUMENSO_SMTP_PASSWORD:-}" },
+        { "key": "NEXT_PRIVATE_SMTP_FROM_NAME", "value": "${DOCUMENSO_SMTP_FROM_NAME}" },
+        { "key": "NEXT_PRIVATE_SMTP_FROM_ADDRESS", "value": "${DOCUMENSO_SMTP_FROM_ADDRESS}" }
+      ],
+      "volumes": [
+        { "hostPath": "${APP_DATA_DIR}/uploads", "containerPath": "/app/uploads" },
+        { "hostPath": "${APP_DATA_DIR}/certs", "containerPath": "/app/certs" }
+      ],
+      "dependsOn": ["documenso_db"]
+    },
+
+    {
+      "name": "documenso_db",
+      "image": "postgres:16-alpine",
+      "environment": [
+        { "key": "POSTGRES_USER", "value": "documenso" },
+        { "key": "POSTGRES_PASSWORD", "value": "${DOCUMENSO_DB_PASSWORD}" },
+        { "key": "POSTGRES_DB", "value": "documenso" }
+      ],
+      "volumes": [
+        { "hostPath": "${APP_DATA_DIR}/db", "containerPath": "/var/lib/postgresql/data" }
+      ]
+    },
+
+    {
+      "name": "documenso_mail",
+      "image": "inbucket/inbucket:latest",
+      "volumes": [
+        { "hostPath": "${APP_DATA_DIR}/mail", "containerPath": "/storage" }
+      ]
+    }
+  ]
+}
