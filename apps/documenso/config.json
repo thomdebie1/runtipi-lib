@@ -6,7 +6,7 @@
   "port": 3015,
   "dynamic_config": true,
   "tipi_version": 1,
-  "version": "2.3.0",
+  "version": "2.3.1",
   "categories": ["utilities"],
   "short_desc": "The Open Source DocuSign Alternative",
   "description": "Documenso is an open source document signing platform. Sign documents digitally with a self-hosted solution that puts you in control of your data and trust infrastructure.",
