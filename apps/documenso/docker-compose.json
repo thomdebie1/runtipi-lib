@@ -44,6 +44,9 @@
     {
       "name": "documenso_mail",
       "image": "inbucket/inbucket:latest",
+      "addPorts": [
+        { "containerPort": 9000, "hostPort": 9000 }
+      ],
       "volumes": [
         { "hostPath": "${APP_DATA_DIR}/mail", "containerPath": "/storage" }
       ]
