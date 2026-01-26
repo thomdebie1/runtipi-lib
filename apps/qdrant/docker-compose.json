@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 2,
+  "$schema": "https://schemas.runtipi.io/dynamic-compose.json",
+  "services": [
+    {
+      "name": "qdrant",
+      "image": "qdrant/qdrant:v1.16.3",
+      "isMain": true,
+      "internalPort": 6333,
+      "environment": [
+        { "key": "QDRANT__SERVICE__API_KEY", "value": "${QDRANT_API_KEY:-}" }
+      ],
+      "volumes": [
+        { "hostPath": "${APP_DATA_DIR}/storage", "containerPath": "/qdrant/storage" },
+        { "hostPath": "${APP_DATA_DIR}/snapshots", "containerPath": "/qdrant/snapshots" }
+      ],
+      "addPorts": [
+        { "containerPort": 6334, "hostPort": 6334 }
+      ]
+    }
+  ]
+}

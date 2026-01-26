@@ -1,0 +1,27 @@
+{
+  "id": "qdrant",
+  "name": "Qdrant",
+  "available": true,
+  "exposable": true,
+  "port": 6333,
+  "dynamic_config": true,
+  "tipi_version": 1,
+  "version": "1.16.3",
+  "categories": ["ai", "data"],
+  "short_desc": "High-performance vector database for AI applications",
+  "description": "Qdrant is a vector similarity search engine and vector database. It provides a production-ready service with a convenient API to store, search, and manage vectors with additional payload. Perfect for semantic search, recommendations, and AI applications.",
+  "author": "Qdrant",
+  "website": "https://qdrant.tech",
+  "source": "https://github.com/qdrant/qdrant",
+  "supported_architectures": ["amd64", "arm64"],
+
+  "form_fields": [
+    {
+      "type": "text",
+      "label": "API Key (optioneel, laat leeg om uit te schakelen)",
+      "env_variable": "QDRANT_API_KEY",
+      "required": false,
+      "hint": "Stel een API key in om de Qdrant API te beveiligen"
+    }
+  ]
+}
